@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+cmd/haiku-auth/haiku-auth
 
 # Test binary, built with `go test -c`
 *.test
