@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/voyagerstudio/haiku-auth/pkg/api"
 	"github.com/voyagerstudio/haiku-auth/pkg/config"
 )
@@ -9,7 +9,7 @@ import (
 func main() {
 	cfg, err := config.DefaultConfig()
 	if err != nil {
-		logrus.Fatalf("error loading config: %v", err)
+		log.Fatalf("error loading config: %v", err)
 	}
 
 	srv := api.NewServer(cfg.API.Host, cfg.API.Port)
