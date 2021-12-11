@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: haiku
+    service: db
+  name: haiku-db
+  namespace: haiku
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: nfs
+  volumeMode: Filesystem
+  volumeName: haiku-db

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: haiku
+    service: db
+  name: haiku-db
+  namespace: haiku
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haiku
+      service: db
+  template:
+    metadata:
+      labels:
+        app: haiku
+        service: db
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: haiku-db-creds
+        image: postgres:14.1
+        imagePullPolicy: IfNotPresent
+        name: haiku-db
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 250m
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: haiku-db
+      volumes:
+      - name: haiku-db
+        persistentVolumeClaim:
+          claimName: haiku-db
