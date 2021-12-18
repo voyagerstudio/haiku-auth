@@ -9,6 +9,11 @@ import (
 	"github.com/voyagerstudio/haiku-auth/pkg/db"
 )
 
+const (
+	ParamUser = "user"
+	ParamNote = "note"
+)
+
 // Server is a wrapper type for the general HTTP server
 // We'll be adding things in here like references to a database
 type Server struct {
@@ -33,6 +38,11 @@ func NewServer(host string, port int, db *db.Conn) *Server {
 	// nice additional features
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", s.PingHandler)
+
+	r.HandleFunc("/note/{note}", s.GetNote).Methods(http.MethodGet)
+
+	r.HandleFunc("/user/{user}/notes", s.GetNoteList).Methods(http.MethodGet)
+
 	s.srv.Handler = r
 
 	return s

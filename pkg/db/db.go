@@ -1,26 +1,25 @@
 package db
 
 import (
-	"context"
+	"database/sql"
 	"fmt"
 
-	"github.com/go-pg/pg/v10"
+	_ "github.com/lib/pq"
 )
 
 type Conn struct {
-	conn *pg.DB
+	conn *sql.DB
 }
 
 // New initializes a new database connection
 func New(host string, port int, user, password, database string) (*Conn, error) {
-	conn := pg.Connect(&pg.Options{
-		Addr:     fmt.Sprintf("%s:%d", host, port),
-		User:     user,
-		Password: password,
-		Database: database,
-	})
+	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, database)
+	conn, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return nil, fmt.Errorf("error connecting to db: %v", err)
+	}
 
-	err := conn.Ping(context.Background())
+	err = conn.Ping()
 	if err != nil {
 		return nil, fmt.Errorf("error pinging db: %v", err)
 	}
