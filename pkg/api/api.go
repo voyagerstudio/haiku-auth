@@ -6,16 +6,18 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/voyagerstudio/haiku-auth/pkg/db"
 )
 
 // Server is a wrapper type for the general HTTP server
 // We'll be adding things in here like references to a database
 type Server struct {
 	srv *http.Server
+	db  *db.Conn
 }
 
 // NewServer instantiates a new HTTP REST server
-func NewServer(host string, port int) *Server {
+func NewServer(host string, port int, db *db.Conn) *Server {
 	s := &Server{
 		srv: &http.Server{
 			Addr: fmt.Sprintf("%s:%d", host, port),
@@ -23,6 +25,7 @@ func NewServer(host string, port int) *Server {
 			ReadTimeout:  30 * time.Second,
 			WriteTimeout: 30 * time.Second,
 		},
+		db: db,
 	}
 
 	// We could use the stdlib muxer, but gorilla is incredibly nice,

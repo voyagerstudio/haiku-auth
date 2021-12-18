@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// APIConfig ...
 type APIConfig struct {
 	Host         string
 	Port         int
@@ -14,7 +15,7 @@ type APIConfig struct {
 	WriteTimeout time.Duration
 }
 
-// NewAPIConfig
+// NewAPIConfig ...
 func NewAPIConfig() (*APIConfig, error) {
 	viper.GetViper().SetEnvPrefix("api")
 
