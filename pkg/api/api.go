@@ -39,9 +39,9 @@ func NewServer(host string, port int, db *db.Conn) *Server {
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", s.PingHandler)
 
-	r.HandleFunc("/note/{note}", s.GetNote).Methods(http.MethodGet)
+	r.HandleFunc(fmt.Sprintf("/note/{%s}", ParamNote), s.GetNote).Methods(http.MethodGet)
 
-	r.HandleFunc("/user/{user}/notes", s.GetNoteList).Methods(http.MethodGet)
+	r.HandleFunc(fmt.Sprintf("/user/{%s}/notes", ParamUser), s.GetNoteList).Methods(http.MethodGet)
 
 	s.srv.Handler = r
 
