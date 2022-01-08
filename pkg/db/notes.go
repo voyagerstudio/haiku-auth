@@ -120,7 +120,7 @@ func (c *Conn) CreateNote(user string, id string, text string, order float32) (*
 	var note Note
 	err := c.conn.
 		QueryRow(
-			"INSERT INTO notes SET id, owner_id, data, order = (?, ?, ?, ?) RETURNING data, sort_order, created_at, updated_at",
+			"INSERT INTO notes SET id, owner_id, data, order VALUES (?, ?, ?, ?) RETURNING data, sort_order, created_at, updated_at",
 			id, user, text, order).
 		Scan(&note.Text, &note.Order, &note.CreatedAt, &note.UpdatedAt)
 
@@ -129,4 +129,44 @@ func (c *Conn) CreateNote(user string, id string, text string, order float32) (*
 	}
 
 	return &note, nil
+}
+
+func (c *Conn) UpdateNote(user string, id string, text string, order float32) error {
+	if user == "" {
+		return errors.New("user is empty")
+	}
+	if id == "" {
+		return errors.New("id is empty")
+	}
+	if text == "" {
+		return errors.New("text is empty")
+	}
+
+	_, err := c.conn.
+		Exec(
+			"UPDATE notes SET data, order = (?, ?) WHERE id = ? AND owner_id = ?",
+			text, order, id, user)
+
+	if err != nil {
+		return fmt.Errorf("error updating note: %v", err)
+	}
+
+	return nil
+}
+
+func (c *Conn) DeleteNote(user string, id string) error {
+	if user == "" {
+		return errors.New("user is empty")
+	}
+	if id == "" {
+		return errors.New("id is empty")
+	}
+
+	_, err := c.conn.Exec("DROP notes WHERE id = ? AND owner_id = ?", id, user)
+
+	if err != nil {
+		return fmt.Errorf("error deleting note: %v", err)
+	}
+
+	return nil
 }
