@@ -51,8 +51,8 @@ func NewServer(host string, port int, db *db.Conn) *Server {
 	r.HandleFunc(fmt.Sprintf("/user/{%s}/note/{%s}", ParamUser, ParamNote), s.DeleteNote).Methods(http.MethodDelete)
 	r.HandleFunc(fmt.Sprintf("/user/{%s}/note/{%s}", ParamUser, ParamNote), s.UpdateNote).Methods(http.MethodPut)
 
-	// r.HandleFunc("/user", s.CreateUser).Methods(http.MethodPost)
-	// r.HandleFunc(fmt.Sprintf("/user/{%s}", ParamUser), s.GetUser).Methods(http.MethodGet)
+	r.HandleFunc("/user", s.CreateUser).Methods(http.MethodPost)
+	r.HandleFunc(fmt.Sprintf("/user/{%s}", ParamUser), s.GetUser).Methods(http.MethodGet)
 
 	s.srv.Handler = r
 

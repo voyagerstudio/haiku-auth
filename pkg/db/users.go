@@ -68,3 +68,22 @@ func (c *Conn) GetUser(user string) (*User, error) {
 		UpdatedAt: updatedAt,
 	}, nil
 }
+
+func (c *Conn) CreateUser(id string) (*User, error) {
+	if id == "" {
+		return nil, errors.New("id is empty")
+	}
+
+	var user User
+	err := c.conn.
+		QueryRow(
+			"INSERT INTO users SET id VALUES (?) RETURNING id, created_at, updated_at",
+			id).
+		Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt)
+
+	if err != nil {
+		return nil, fmt.Errorf("error saving user: %v", err)
+	}
+
+	return &user, nil
+}
