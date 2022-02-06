@@ -67,7 +67,7 @@ func (c *Conn) GetNoteDetailList(user string) (*NoteDetailList, error) {
 	notes := []Note{}
 	for res.Next() {
 		n := Note{}
-		if err := res.Scan(&n.ID, n.Text, n.Order, n.CreatedAt, n.UpdatedAt); err != nil {
+		if err := res.Scan(&n.ID, &n.Text, &n.Order, &n.CreatedAt, &n.UpdatedAt); err != nil {
 			return nil, fmt.Errorf("error scanning results: %v", err)
 		}
 		notes = append(notes, n)
@@ -162,7 +162,7 @@ func (c *Conn) DeleteNote(user string, id string) error {
 		return errors.New("id is empty")
 	}
 
-	_, err := c.conn.Exec("DROP notes WHERE id = ? AND owner_id = ?", id, user)
+	_, err := c.conn.Exec("DELETE FROM notes WHERE id = ? AND owner_id = ?", id, user)
 
 	if err != nil {
 		return fmt.Errorf("error deleting note: %v", err)

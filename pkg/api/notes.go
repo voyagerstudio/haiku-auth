@@ -93,7 +93,7 @@ func (s *Server) CreateNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(userID) != 128 {
-		log.Error("invalid user id in createnote")
+		log.Errorf("invalid user id '%s' in createnote", userID)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -105,7 +105,7 @@ func (s *Server) CreateNote(w http.ResponseWriter, r *http.Request) {
 		if errors.As(err, &mr) {
 			http.Error(w, mr.msg, mr.status)
 		} else {
-			log.Println(err.Error())
+			log.Error(err.Error())
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
 		return

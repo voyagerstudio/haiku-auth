@@ -51,9 +51,7 @@ func (c *Conn) GetUser(user string) (*User, error) {
 		return nil, errors.New("user is empty")
 	}
 
-	var id string
-	var username string
-	var email string
+	var id, username, email string
 	var createdAt, updatedAt time.Time
 	err := c.conn.QueryRow("SELECT id, username, email, created_at, updated_at FROM users WHERE id = ?", user).Scan(&id, &username, &email, &createdAt, &updatedAt)
 	if err != nil {

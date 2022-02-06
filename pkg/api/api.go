@@ -19,6 +19,7 @@ const (
 	ParamUser = "user"
 	ParamNote = "note"
 )
+const ID_SIZE = 128
 
 // Server is a wrapper type for the general HTTP server
 // We'll be adding things in here like references to a database
@@ -58,8 +59,6 @@ func NewServer(host string, port int, db *db.Conn) *Server {
 
 	return s
 }
-
-const ID_SIZE = 128
 
 func GenerateId() (string, error) {
 	raw := make([]byte, ID_SIZE)
