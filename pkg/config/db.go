@@ -48,9 +48,10 @@ func NewDBConfig() (*DBConfig, error) {
 	}
 
 	return &DBConfig{
-		Host: host,
-		Port: port,
-		User: user,
-		Pass: pass,
+		Host:     host,
+		Port:     port,
+		Database: database,
+		User:     user,
+		Pass:     pass,
 	}, nil
 }
